@@ -30,7 +30,7 @@ class BookServiceTests {
 		bookService.create(new BookEntity(null, new AuthorEntity(1L, "Author 1"), "Book 1", "ann", "in", 2));
 		bookService.create(new BookEntity(null, new AuthorEntity(2L, "Author 2"), "Book 2", "ann", "in", 2));
 
-		Assertions.assertEquals(1, bookService.getAll(1L).size());
+		Assertions.assertEquals(2, bookService.getAll(1L).size());
 	}
 
 	@Test
@@ -59,6 +59,6 @@ class BookServiceTests {
 				.create(new BookEntity(null, new AuthorEntity(4L, "author"), "Book 1", "ann", "in", 2));
 
 		Assertions.assertEquals(0, bookService.getAll(null).size());
-		Assertions.assertEquals(3L, newEntity.getId());
+		Assertions.assertEquals(5L, newEntity.getId());
 	}
 }

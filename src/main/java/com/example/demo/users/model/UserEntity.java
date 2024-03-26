@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.example.demo.books.model.BookEntity;
 import com.example.demo.core.model.BaseEntity;
 
 public class UserEntity extends BaseEntity {
     private String login;
     private String mail;
     private String password;
-    private final List<Long> favoritebooks = new ArrayList<>();
+    private final List<BookEntity> favoritebooks = new ArrayList<>();
 
     public UserEntity() {
         super();
     }
 
-    public UserEntity(Long id, String login, String mail, String password, List<Long> favoritebooks) {
+    public UserEntity(Long id, String login, String mail, String password, List<BookEntity> favoritebooks) {
         super(id);
         this.login = login;
         this.mail = mail;
@@ -48,22 +49,22 @@ public class UserEntity extends BaseEntity {
         this.password = password;
     }
 
-    public List<Long> getFavoritebooks() {
+    public List<BookEntity> getFavoritebooks() {
         return favoritebooks;
     }
 
-    public void setFavoritebooks(List<Long> favoritebooks) {
+    public void setFavoritebooks(List<BookEntity> favoritebooks) {
         this.favoritebooks.clear();
         this.favoritebooks.addAll(favoritebooks);
     }
 
-    public List<Long> addFavoritebook(Long favoritebook_id) {
-        favoritebooks.add(favoritebook_id);
+    public List<BookEntity> addFavoritebook(BookEntity favoritebook) {
+        favoritebooks.add(favoritebook);
         return favoritebooks;
     }
 
-    public List<Long> deleteFavoritebook(Long favoritebook_id) {
-        favoritebooks.remove(favoritebook_id);
+    public List<BookEntity> deleteFavoritebook(BookEntity favoritebook) {
+        favoritebooks.remove(favoritebook);
         return favoritebooks;
     }
 

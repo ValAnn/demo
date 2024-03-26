@@ -2,6 +2,7 @@ package com.example.demo.users.api;
 
 import java.util.List;
 
+import com.example.demo.books.model.BookEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +15,7 @@ public class UserDto {
     private String mail;
     @NotBlank
     private String password;
-    private List<Long> favoritebooks;
+    private List<BookEntity> favoritebooks;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Long getId() {
@@ -49,11 +50,11 @@ public class UserDto {
         this.password = password;
     }
 
-    public List<Long> getFavoritebooks() {
+    public List<BookEntity> getFavoritebooks() {
         return favoritebooks;
     }
 
-    public void setFavoritebooks(List<Long> favoritebooks) {
+    public void setFavoritebooks(List<BookEntity> favoritebooks) {
         this.favoritebooks = favoritebooks;
     }
 }

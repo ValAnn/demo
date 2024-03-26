@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.books.model.BookEntity;
+import com.example.demo.books.service.BookService;
 import com.example.demo.core.configuration.Constants;
 import com.example.demo.users.model.UserEntity;
 import com.example.demo.users.service.UserService;
@@ -22,11 +24,13 @@ import jakarta.validation.Valid;
 @RequestMapping(Constants.API_URL + "/user")
 public class UserController {
     private final UserService userService;
+    private final BookService bookService;
     private final ModelMapper modelMapper;
 
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ModelMapper modelMapper, BookService bookService) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.bookService = bookService;
     }
 
     private UserDto toDto(UserEntity entity) {
@@ -62,15 +66,15 @@ public class UserController {
         return toDto(userService.delete(id));
     }
 
-    @PutMapping("/addfavoritebook/{id}")
+    @PostMapping("/favoritebooks/{id}")
     public UserDto addfavoritebook(@PathVariable(name = "id") Long id, Long favoritebook_id) {
         return toDto(
-                userService.addfavoritebook(id, favoritebook_id));
+                userService.addfavoritebook(id, bookService.get(favoritebook_id)));
     }
 
-    @PutMapping("/deletefavoritebook/{id}")
+    @DeleteMapping("/favoritebooks/{id}")
     public UserDto deletefavoritebook(@PathVariable(name = "id") Long id, Long favoritebook_id) {
         return toDto(
-                userService.deletefavoritebook(id, favoritebook_id));
+                userService.deletefavoritebook(id, bookService.get(favoritebook_id)));
     }
 }

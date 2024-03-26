@@ -26,7 +26,8 @@ class UserServiceTests {
 	@Autowired
 	private UserService userService;
 	private BookController bookController;
-	private BookService bookService = new BookService(new BookRepository());
+	@Autowired
+	private BookService bookService;
 
 	@Test
 	void getTest() {
@@ -36,6 +37,8 @@ class UserServiceTests {
 	@Test
 	@Order(1)
 	void createTest() {
+		bookService.create(new BookEntity(null, new AuthorEntity(1L, "Author 1"), "Book 1", "ann", "in", 2));
+		bookService.create(new BookEntity(null, new AuthorEntity(2L, "Author 2"), "Book 2", "ann", "in", 2));
 
 		userService.create(new UserEntity(null, "ValAnn", "ann@mail.ru", "123", new ArrayList<>()));
 		final UserEntity last = userService
@@ -47,7 +50,6 @@ class UserServiceTests {
 	@Test
 	@Order(2)
 	void updateTest() {
-		userService.addfavoritebook(1L, 1L);
 
 		final String test = "TEST";
 		final UserEntity entity = userService.get(2L);
@@ -66,13 +68,12 @@ class UserServiceTests {
 
 		userService.create(new UserEntity(null, "ValAnn", "ann@mail.ru", "123", new ArrayList()));
 
-		userService.addfavoritebook(1L, 4L);
-		userService.addfavoritebook(1L, 3L);
-		userService.addfavoritebook(1L, 1L);
-		Assertions.assertEquals(4, userService.getfavoritebooks(1L).size());
+		userService.addfavoritebook(1L, bookService.get(1L));
+		userService.addfavoritebook(1L, bookService.get(2L));
+		Assertions.assertEquals(2, userService.getfavoritebooks(1L).size());
 
-		userService.deletefavoritebook(1L, 1L);
-		Assertions.assertEquals(3, userService.getfavoritebooks(1L).size());
+		userService.deletefavoritebook(1L, bookService.get(1L));
+		Assertions.assertEquals(1, userService.getfavoritebooks(1L).size());
 	}
 
 	@Test

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.books.model.BookEntity;
 import com.example.demo.books.repository.BookRepository;
 import com.example.demo.books.service.BookService;
 import com.example.demo.core.error.NotFoundException;
@@ -29,7 +30,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException(id));
     }
 
-    public List<Long> getfavoritebooks(Long id) {
+    public List<BookEntity> getfavoritebooks(Long id) {
         return Optional.ofNullable(repository.get(id).getFavoritebooks())
                 .orElseThrow(() -> new NotFoundException(id));
     }
@@ -51,15 +52,15 @@ public class UserService {
         return repository.delete(existsEntity);
     }
 
-    public UserEntity addfavoritebook(Long id, Long entity_id) {
+    public UserEntity addfavoritebook(Long id, BookEntity entity) {
         final UserEntity existsEntity = get(id);
-        existsEntity.addFavoritebook(entity_id);
+        existsEntity.addFavoritebook(entity);
         return repository.update(existsEntity);
     }
 
-    public UserEntity deletefavoritebook(Long id, Long favoritebook_id) {
+    public UserEntity deletefavoritebook(Long id, BookEntity favoritebook) {
         final UserEntity existsEntity = get(id);
-        existsEntity.deleteFavoritebook(favoritebook_id);
+        existsEntity.deleteFavoritebook(favoritebook);
         return repository.update(existsEntity);
     }
 
