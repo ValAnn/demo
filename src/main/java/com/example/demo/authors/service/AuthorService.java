@@ -1,11 +1,13 @@
 package com.example.demo.authors.service;
 
+import com.example.demo.core.error.NotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.core.error.NotFoundException;
 import com.example.demo.authors.model.AuthorEntity;
 import com.example.demo.authors.repository.AuthorRepository;
 
@@ -17,27 +19,45 @@ public class AuthorService {
         this.repository = repository;
     }
 
+    private void checkName(String name) {
+        if (repository.findByNameIgnoreCase(name).isPresent()) {
+            throw new IllegalArgumentException(
+                    String.format("Author with name %s is already exists", name));
+        }
+    }
+
+    @Transactional(readOnly = true)
     public List<AuthorEntity> getAll() {
-        return repository.getAll();
+        return StreamSupport.stream(repository.findAll().spliterator(), false).toList();
     }
 
+    @Transactional(readOnly = true)
     public AuthorEntity get(Long id) {
-        return Optional.ofNullable(repository.get(id))
-                .orElseThrow(() -> new NotFoundException(id));
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(AuthorEntity.class, id));
     }
 
+    @Transactional
     public AuthorEntity create(AuthorEntity entity) {
-        return repository.create(entity);
+        if (entity == null) {
+            throw new IllegalArgumentException("Entity is null");
+        }
+        checkName(entity.getName());
+        return repository.save(entity);
     }
 
+    @Transactional
     public AuthorEntity update(Long id, AuthorEntity entity) {
         final AuthorEntity existsEntity = get(id);
+        checkName(entity.getName());
         existsEntity.setName(entity.getName());
-        return repository.update(existsEntity);
+        return repository.save(existsEntity);
     }
 
+    @Transactional
     public AuthorEntity delete(Long id) {
         final AuthorEntity existsEntity = get(id);
-        return repository.delete(existsEntity);
+        repository.delete(existsEntity);
+        return existsEntity;
     }
 }

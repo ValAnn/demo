@@ -59,7 +59,9 @@ public class UserEntity extends BaseEntity {
     }
 
     public List<BookEntity> addFavoritebook(BookEntity favoritebook) {
-        favoritebooks.add(favoritebook);
+        if (!favoritebooks.contains(favoritebook)) {
+            favoritebooks.add(favoritebook);
+        }
         return favoritebooks;
     }
 

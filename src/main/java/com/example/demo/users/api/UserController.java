@@ -66,13 +66,13 @@ public class UserController {
         return toDto(userService.delete(id));
     }
 
-    @PostMapping("/favoritebooks/{id}")
+    @PostMapping("/{id}/favoritebooks/{favoritebook_id}")
     public UserDto addfavoritebook(@PathVariable(name = "id") Long id, Long favoritebook_id) {
         return toDto(
                 userService.addfavoritebook(id, bookService.get(favoritebook_id)));
     }
 
-    @DeleteMapping("/favoritebooks/{id}")
+    @DeleteMapping("/{id}/favoritebooks/{favoritebook_id}")
     public UserDto deletefavoritebook(@PathVariable(name = "id") Long id, Long favoritebook_id) {
         return toDto(
                 userService.deletefavoritebook(id, bookService.get(favoritebook_id)));

@@ -4,20 +4,31 @@ import java.util.Objects;
 
 import com.example.demo.core.model.BaseEntity;
 import com.example.demo.authors.model.AuthorEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "books")
 public class BookEntity extends BaseEntity {
+    @ManyToOne
+    @JoinColumn(name = "typeId", nullable = false)
     private AuthorEntity author;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String annotation;
+    @Column(nullable = false)
     private String info;
+    @Column(nullable = false)
     private Integer number;
 
     public BookEntity() {
-        super();
     }
 
-    public BookEntity(Long id, AuthorEntity author, String name, String annotation, String info, Integer number) {
-        super(id);
+    public BookEntity(AuthorEntity author, String name, String annotation, String info, Integer number) {
         this.author = author;
         this.name = name;
         this.annotation = annotation;

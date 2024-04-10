@@ -69,11 +69,13 @@ class UserServiceTests {
 		userService.create(new UserEntity(null, "ValAnn", "ann@mail.ru", "123", new ArrayList()));
 
 		userService.addfavoritebook(1L, bookService.get(1L));
-		userService.addfavoritebook(1L, bookService.get(2L));
-		Assertions.assertEquals(2, userService.getfavoritebooks(1L).size());
+		Assertions.assertEquals(1, userService.getfavoritebooks(1L).size());
+
+		userService.addfavoritebook(1L, bookService.get(1L));
+		Assertions.assertEquals(1, userService.getfavoritebooks(1L).size());
 
 		userService.deletefavoritebook(1L, bookService.get(1L));
-		Assertions.assertEquals(1, userService.getfavoritebooks(1L).size());
+		Assertions.assertEquals(0, userService.getfavoritebooks(1L).size());
 	}
 
 	@Test

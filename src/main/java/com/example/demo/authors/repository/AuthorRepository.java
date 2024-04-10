@@ -1,10 +1,11 @@
 package com.example.demo.authors.repository;
 
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-import com.example.demo.core.repository.MapRepository;
+import org.springframework.data.repository.CrudRepository;
+
 import com.example.demo.authors.model.AuthorEntity;
 
-@Repository
-public class AuthorRepository extends MapRepository<AuthorEntity> {
+public interface AuthorRepository extends CrudRepository<AuthorEntity, Long> {
+    Optional<AuthorEntity> findByNameIgnoreCase(String name);
 }
